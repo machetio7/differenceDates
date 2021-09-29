@@ -24,7 +24,7 @@ class HomePage extends StatelessWidget {
                     const Padding(
                       padding: EdgeInsets.all(10.0),
                       child: Text(
-                        'This app try to show us what \nis the diference between two dates.',
+                        'this app shows us what \nis the difference between two dates.',
                         textAlign: TextAlign.center,
                         style: TextStyle(
                             fontSize: 16, fontWeight: FontWeight.bold),
@@ -47,7 +47,14 @@ class HomePage extends StatelessWidget {
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(20),
                                   ),
-                                  child: const Text('First Date'),
+                                  child: const ListTile(
+                                    leading: Icon(
+                                      Icons.touch_app,
+                                      color: Colors.black,
+                                    ),
+                                    title: Text('First Date',
+                                        textAlign: TextAlign.center),
+                                  ),
                                 ),
                                 SizedBox(
                                   child: TextField(
@@ -78,7 +85,14 @@ class HomePage extends StatelessWidget {
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(20),
                                   ),
-                                  child: const Text('Second Date'),
+                                  child: const ListTile(
+                                    leading: Icon(
+                                      Icons.touch_app,
+                                      color: Colors.black,
+                                    ),
+                                    title: Text('Second Date',
+                                        textAlign: TextAlign.center),
+                                  ),
                                 ),
                                 SizedBox(
                                   child: TextField(
@@ -111,14 +125,13 @@ class HomePage extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.only(left: 50.0, right: 50.0),
                       child: TextField(
+                        maxLines: 2,
                         textAlign: TextAlign.center,
                         enabled: false,
                         decoration: InputDecoration(
                           hintText: (home.dateOne != '' && home.dateTwo != '')
                               ? home.difference()
-                              : home.minuteNegative < 0
-                                  ? 'Two dates, old date to new date'
-                                  : 'Please enter two dates',
+                              : 'Please enter two dates',
                         ),
                       ),
                     ),

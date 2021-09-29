@@ -3,18 +3,27 @@ import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:intl/intl.dart';
 
 class HomeController extends GetxController {
-  String dateOne = '', dateTwo = '', aswer = '';
+  //variables que muestran la respuesta en los TextField
+  String dateOne = '', dateTwo = '', answer = '';
+
+  //Varaibles para obtener las fechas actuales
   DateTime dateInputOne = DateTime.now();
   DateTime dateInputTwo = DateTime.now();
+
+  //variables para obtener la hora actual
   TimeOfDay timeOne = TimeOfDay.now();
   TimeOfDay timeTwo = TimeOfDay.now();
+
+  //variable para indicar si la fecha 2 es menor a la fecha 1
   int minuteNegative = 0;
 
+//Método para formatear la fecha y mostrar en los TextField
   String _formatter(DateTime date) {
     DateFormat format = DateFormat('dd-MM-yyyy H:mm a');
     return format.format(date);
   }
 
+//Método para recolectar las 2 fechas y horas establecidas por el usuario en UI
   Future datePresent(BuildContext context, int option) async {
     switch (option) {
       case 0:
@@ -52,8 +61,6 @@ class HomeController extends GetxController {
             }
           },
         );
-        // ignore: avoid_print
-        print('antes de Update one');
         update();
         break;
       case 1:
@@ -98,6 +105,7 @@ class HomeController extends GetxController {
     }
   }
 
+//Método para obtener la diferencia entre las fechas indicadas
   String difference() {
     final date1 = dateInputOne;
     final date2 = dateInputTwo;
@@ -108,103 +116,82 @@ class HomeController extends GetxController {
     String horas = '0';
     String minutos = '0';
     List<String> data = [];
+    String answer = '';
+
+//Validaciones para mostrar la diferencia
+    bool hM = false, dHM = false, sDHM = false, mSDHM = false, aMSDHM = false;
 
     minutos = (date2.difference(date1).inMinutes).toString();
-    minuteNegative = int.parse(minutos);
+    minuteNegative = date2.difference(date1).inMinutes;
     print(minutos);
-    if (int.parse(minutos) >= 60) {
-      horas = (double.parse(minutos) / 60).toStringAsFixed(2);
+    if ((int.parse(minutos).abs()) >= 60) {
+      horas = (double.parse(minutos).abs() / 60).toString();
       data = horas.split('.');
       minutos = data[1]; //00
+      data[1] = '0.' + data[1];
+      minutos = (double.parse(data[1]) * 60).round().toString();
       if (int.parse(data[0]) >= 24) {
-        dias = (double.parse(data[0]) / 24).toStringAsFixed(2);
+        hM = true;
+        dias = (double.parse(data[0]) / 24).toString();
         data = dias.split('.');
         data[1] = '0.' + data[1];
-        horas = (double.parse(data[1]) * 24).floor().toString();
+        horas = (double.parse(data[1]) * 24).round().toString();
         if (int.parse(data[0]) >= 7) {
-          semanas = (double.parse(data[0]) / 7).toStringAsFixed(2);
+          dHM = true;
+          semanas = (double.parse(data[0]) / 7).toString();
           data = semanas.split('.');
           data[1] = '0.${data[1]}';
-          dias = (double.parse(data[1]) * 7).floor().toString(); //00
-          if (int.parse(data[0]) > 4.4) {
-            meses = (double.parse(data[0]) / 4.4).toStringAsFixed(2);
+          dias = (double.parse(data[1]) * 7).round().toString(); //00
+          if (int.parse(data[0]) > 4.3) {
+            sDHM = true;
+            meses = (double.parse(data[0]) / 4.3).toString();
             data = meses.split('.');
             data[1] = '0.${data[1]}';
-            semanas = (double.parse(data[1]) * 4.4).floor().toString();
+            semanas = (double.parse(data[1]) * 4.3).round().toString();
             if (int.parse(data[0]) >= 12) {
-              anos = (double.parse(data[0]) / 12).toStringAsFixed(2);
+              mSDHM = true;
+              anos = (double.parse(data[0]) / 12).toString();
               data = anos.split('.');
               data[1] = '0.${data[1]}';
               anos = data[0];
               meses = (double.parse(data[1]) * 12).round().toString();
+              aMSDHM = true;
             } else {
               meses = data[0].toString();
+              mSDHM = true;
             }
           } else {
             semanas = data[0].toString();
+            sDHM = true;
           }
         } else {
           dias = data[0].toString();
+          dHM = true;
         }
       } else {
         horas = data[0].toString();
+        hM = true;
       }
     } else {
       minutos = minutos;
     }
 
-    if (int.parse(anos) > 0 && int.parse(meses) >= 0) {
-      if (meses == '0') {
-        if (anos == '1') {
-          return ('$anos año');
-        } else {
-          return ('$anos años');
-        }
-      } else {
-        return ('$anos Años, $meses meses');
-      }
-    } else if (int.parse(meses) > 0 && int.parse(semanas) >= 0) {
-      if (semanas == '0') {
-        if (meses == '1') {
-          return ('$meses mes');
-        } else {
-          return ('$meses meses');
-        }
-      } else {
-        return ('$meses meses, $semanas semanas');
-      }
-    } else if (int.parse(semanas) > 0 && int.parse(dias) >= 0) {
-      if (dias == '0') {
-        if (semanas == '1') {
-          return ('$semanas semana');
-        } else {
-          return ('$semanas semanas');
-        }
-      } else {
-        return ('$semanas semanas, $dias dias');
-      }
-    } else if (int.parse(dias) > 0 && int.parse(horas) >= 0) {
-      if (horas == '0') {
-        if (dias == '1') {
-          return ('$dias dia');
-        } else {
-          return ('$dias dias');
-        }
-      } else {
-        return ('$dias dias, $horas horas');
-      }
-    } else if (int.parse(horas) > 0 && int.parse(minutos) >= 0) {
-      if (minutos == '0') {
-        if (horas == '1') {
-          return ('$horas hora');
-        } else {
-          return ('$horas horas');
-        }
-      } else {
-        return ('$horas horas, $minutos minutos');
-      }
+    if (hM && dHM && sDHM && mSDHM && aMSDHM) {
+      answer =
+          ('$anos años,$meses meses, $semanas semanas, $dias dias, $horas horas, $minutos minutos');
+    } else if (hM && dHM && sDHM && mSDHM) {
+      answer =
+          ('$meses meses, $semanas semanas, $dias dias, $horas horas, $minutos minutos');
+    } else if (hM && dHM && sDHM) {
+      answer = ('$semanas semanas, $dias dias, $horas horas, $minutos minutos');
+    } else if (hM && dHM) {
+      answer = ('$dias dias, $horas horas, $minutos minutos');
+    } else if (hM) {
+      answer = ('$horas horas, $minutos minutos');
     } else {
-      return ('$minutos minutos');
+      answer = ('$minutos minutos');
     }
+    (minuteNegative < 0) ? answer = '- $answer' : answer;
+    return answer;
   }
 }
