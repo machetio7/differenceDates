@@ -1,9 +1,13 @@
 import 'package:date_dif/controller/home_controller.dart';
+import 'package:date_dif/controller/login_controller.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
 
 class HomePage extends StatelessWidget {
-  const HomePage({Key? key}) : super(key: key);
+  HomePage({Key? key}) : super(key: key);
+  final user = FirebaseAuth.instance.currentUser!;
 
   @override
   Widget build(BuildContext context) {
@@ -16,6 +20,15 @@ class HomePage extends StatelessWidget {
                 backgroundColor: Colors.black,
                 title: Text('Difference between dates'.toUpperCase()),
                 centerTitle: true,
+                actions: [
+                  IconButton(
+                      icon: const Icon(
+                        FontAwesomeIcons.signOutAlt,
+                      ),
+                      onPressed: () {
+                        home.logout();
+                      }),
+                ],
               ),
               body: SizedBox(
                 width: double.infinity,
@@ -135,11 +148,52 @@ class HomePage extends StatelessWidget {
                         ),
                       ),
                     ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    Text(
+                      'Profile',
+                      style: TextStyle(fontSize: 24),
+                    ),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    CircleAvatar(
+                      radius: 40,
+                      backgroundImage: NetworkImage(user.photoURL!),
+                    ),
+                    const SizedBox(
+                      height: 8,
+                    ),
+                    Text(
+                      'User: ${user.displayName!}',
+                      style: TextStyle(
+                        fontSize: 16,
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 8,
+                    ),
+                    Text(
+                      'Email: ${user.email!}',
+                      style: TextStyle(
+                        fontSize: 16,
+                      ),
+                    ),
                   ],
                 ),
               ),
             ),
           );
         });
+  }
+}
+
+class SignUpWidget extends StatelessWidget {
+  const SignUpWidget({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container();
   }
 }

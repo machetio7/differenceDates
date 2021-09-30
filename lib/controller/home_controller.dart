@@ -1,8 +1,14 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
+import 'package:get_storage/get_storage.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:intl/intl.dart';
 
 class HomeController extends GetxController {
+  final googleSignIn = GoogleSignIn();
+  final log = GetStorage();
+
   //variables que muestran la respuesta en los TextField
   String dateOne = '', dateTwo = '', answer = '';
 
@@ -123,7 +129,7 @@ class HomeController extends GetxController {
 
     minutos = (date2.difference(date1).inMinutes).toString();
     minuteNegative = date2.difference(date1).inMinutes;
-    print(minutos);
+
     if ((int.parse(minutos).abs()) >= 60) {
       horas = (double.parse(minutos).abs() / 60).toString();
       data = horas.split('.');
@@ -193,5 +199,11 @@ class HomeController extends GetxController {
     }
     (minuteNegative < 0) ? answer = '- $answer' : answer;
     return answer;
+  }
+
+  Future logout() async {
+    await googleSignIn.disconnect();
+    FirebaseAuth.instance.signOut();
+    log.remove('token');
   }
 }
