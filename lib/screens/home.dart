@@ -1,5 +1,4 @@
 import 'package:date_dif/controller/home_controller.dart';
-import 'package:date_dif/controller/login_controller.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -149,9 +148,9 @@ class HomePage extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(
-                      height: 20,
+                      height: 80,
                     ),
-                    Text(
+                    const Text(
                       'Profile',
                       style: TextStyle(fontSize: 24),
                     ),
@@ -167,7 +166,7 @@ class HomePage extends StatelessWidget {
                     ),
                     Text(
                       'User: ${user.displayName!}',
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 16,
                       ),
                     ),
@@ -176,7 +175,7 @@ class HomePage extends StatelessWidget {
                     ),
                     Text(
                       'Email: ${user.email!}',
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 16,
                       ),
                     ),
@@ -186,14 +185,5 @@ class HomePage extends StatelessWidget {
             ),
           );
         });
-  }
-}
-
-class SignUpWidget extends StatelessWidget {
-  const SignUpWidget({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container();
   }
 }

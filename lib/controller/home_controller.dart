@@ -6,6 +6,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:intl/intl.dart';
 
 class HomeController extends GetxController {
+  //Variable necesarias para instanciadas para hacer uso de un servicio
   final googleSignIn = GoogleSignIn();
   final log = GetStorage();
 
@@ -201,6 +202,7 @@ class HomeController extends GetxController {
     return answer;
   }
 
+//Método para realizar el logout de la aplicacion y destruye las varibles locales
   Future logout() async {
     await googleSignIn.disconnect();
     FirebaseAuth.instance.signOut();
